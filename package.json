@@ -1,0 +1,25 @@
+{
+	"name": "acupuncture-reminder",
+	"module": "src/index.ts",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"dev": "bun run --watch src/index.ts",
+		"start": "bun run src/index.ts",
+		"lint": "biome check .",
+		"format": "biome format --write ."
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.2.6",
+		"@effect/language-service": "^0.45.1",
+		"@types/bun": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	},
+	"dependencies": {
+		"@effect/platform-bun": "^0.81.1",
+		"effect": "^3.18.4",
+		"twilio": "^5.10.3"
+	}
+}
