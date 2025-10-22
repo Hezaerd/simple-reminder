@@ -1,9 +1,14 @@
 import { BunContext, BunRuntime } from "@effect/platform-bun";
 import { ConfigProvider, Effect, Layer } from "effect";
+import * as Calendar from "./calendar";
 import { main } from "./main";
 import * as Twilio from "./twilio";
 
-const services = Layer.mergeAll(BunContext.layer, Twilio.fromEnv);
+const services = Layer.mergeAll(
+	BunContext.layer,
+	Twilio.fromEnv,
+	Calendar.fromServiceAccount,
+);
 
 BunRuntime.runMain(
 	main.pipe(

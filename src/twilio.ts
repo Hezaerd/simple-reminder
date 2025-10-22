@@ -68,17 +68,20 @@ export const fromEnv = Layer.scoped(
 	}),
 );
 
-export const sendSms = (to: string, body: string) =>
-	Effect.gen(function* () {
-		const twilio = yield* Twilio;
+export const sendSms = Effect.functionWithSpan({
+	body: (to: string, body: string) =>
+		Effect.gen(function* () {
+			const twilio = yield* Twilio;
 
-		const from = yield* Config.string("TWILIO_PHONE_NUMBER");
+			const from = yield* Config.string("TWILIO_PHONE_NUMBER");
 
-		yield* Effect.try({
-			try: () =>
-				twilio.use((client) => client.messages.create({ from, to, body })),
-			catch: (e) => new TwilioError({ cause: e }),
-		});
+			yield* Effect.try({
+				try: () =>
+					twilio.use((client) => client.messages.create({ from, to, body })),
+				catch: (e) => new TwilioError({ cause: e }),
+			});
 
-		yield* Effect.logInfo(`SMS sent to ${to}`);
-	}).pipe(Effect.withLogSpan("sendSms"));
+			yield* Effect.logInfo(`SMS sent to ${to}`);
+		}),
+	options: { name: "sendSms" },
+});
